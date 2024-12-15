@@ -44,13 +44,29 @@ document.getElementById('getTicket').addEventListener('click', async () => {
             <th>Berth Number</th>
             <td>${ticket.berth_number}</td>
           </tr>
+          <tr>
+            <th>Source Station</th>
+            <td>${ticket.source_station}</td>
+          </tr>
+          <tr>
+            <th>Destination Station</th>
+            <td>${ticket.destination_station}</td>
+          </tr>
+          <tr>
+            <th>Class Type</th>
+            <td>${ticket.class_type}</td>
+          </tr>
+          <tr>
+            <th>Booking Time</th>
+            <td>${ticket.booking_time}</td>
+          </tr>
         </table>
       `;
     } else {
-      ticketDetailsSection.innerHTML = '<p style="color: red;">Ticket not found!</p>';
+      ticketDetailsSection.innerHTML = '<p class="error">Ticket not found!</p>';
     }
   } catch (error) {
     console.error('Error fetching ticket:', error);
-    ticketDetailsSection.innerHTML = '<p style="color: red;">An error occurred while fetching ticket details.</p>';
+    ticketDetailsSection.innerHTML = '<p class="error">An error occurred while fetching ticket details.</p>';
   }
 });

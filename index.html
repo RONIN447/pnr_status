@@ -31,9 +31,20 @@
       flex-direction: column;
       gap: 10px;
     }
-    input {
-      padding: 10px;
+    label {
       font-size: 16px;
+      font-weight: bold;
+    }
+    .pnr-inputs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .pnr-inputs input {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      text-align: center;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
@@ -68,34 +79,82 @@
       color: red;
       font-weight: bold;
     }
+    /* Welcome Banner */
+    .welcome-banner {
+      background-color: rgba(52, 152, 219, 0.7);
+      color: white;
+      padding: 10px;
+      font-size: 18px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+      position: relative;
+      animation: marquee 20s linear infinite;
+    }
+    @keyframes marquee {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(-100%);
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="welcome-banner">
+    Welcome to our ticket reservation system. Enter your details to get the information.
+  </div>
+
   <div class="container">
     <h1>Railway Reservation System</h1>
     <div class="input-section">
-      <label for="pnr">Enter PNR:</label>
-      <input type="text" id="pnr" placeholder="Enter your PNR" />
+      <!-- PNR input fields (6 boxes) -->
+      <label for="pnr">Enter 6 Digit PNR:</label>
+      <div class="pnr-inputs">
+        <input type="text" id="pnr1" maxlength="1" oninput="moveFocus(this, 'pnr2')" />
+        <input type="text" id="pnr2" maxlength="1" oninput="moveFocus(this, 'pnr3')" />
+        <input type="text" id="pnr3" maxlength="1" oninput="moveFocus(this, 'pnr4')" />
+        <input type="text" id="pnr4" maxlength="1" oninput="moveFocus(this, 'pnr5')" />
+        <input type="text" id="pnr5" maxlength="1" oninput="moveFocus(this, 'pnr6')" />
+        <input type="text" id="pnr6" maxlength="1" />
+      </div>
       <button id="getTicket">Get Ticket</button>
     </div>
     <div id="ticketDetails" class="ticket-section"></div>
   </div>
+
   <script>
+    // Move focus to the next input field after entering a digit
+    function moveFocus(current, nextFieldId) {
+      if (current.value.length === 1) {
+        document.getElementById(nextFieldId).focus();
+      }
+    }
+
     document.getElementById('getTicket').addEventListener('click', async () => {
-      const pnr = document.getElementById('pnr').value;
+      // Collect PNR digits from individual input fields
+      const pnr = Array.from({ length: 6 }, (_, i) => document.getElementById(`pnr${i + 1}`).value).join('');
       const ticketDetailsSection = document.getElementById('ticketDetails');
-    
+
       // Clear previous results
       ticketDetailsSection.innerHTML = '';
-    
+
+      // Check if the PNR is exactly 6 digits long
+      if (pnr.length !== 6) {
+        ticketDetailsSection.innerHTML = '<p class="error">Please enter a 6-digit PNR number!</p>';
+        return;
+      }
+
       try {
         const response = await fetch(`http://127.0.0.1:3000/ticket/${pnr}`);
         if (response.ok) {
           const ticket = await response.json();
-    
+
           // Convert fare to a number if it is a string
           const fare = parseFloat(ticket.fare);
-    
+
           // Create table to display ticket details
           ticketDetailsSection.innerHTML = `
             <table>
@@ -129,11 +188,11 @@
               </tr>
               <tr>
                 <th>Source Station</th>
-                <td>${ticket.source_station}</td>
+                <td><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(ticket.source_station)}" target="_blank">${ticket.source_station}</a></td>
               </tr>
               <tr>
                 <th>Destination Station</th>
-                <td>${ticket.destination_station}</td>
+                <td><a href="https://en.wikipedia.org/wiki/${encodeURIComponent(ticket.destination_station)}" target="_blank">${ticket.destination_station}</a></td>
               </tr>
               <tr>
                 <th>Class Type</th>

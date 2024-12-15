@@ -1,97 +1,135 @@
 /* General Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styles with Background Image */
+body {
+  font-family: Arial, sans-serif;
+  background: url('https://imgmedia.lbb.in/media/2021/10/6165b8de6a9fc04e3f38c58c_1634056414914.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Optional: Adjust overlay transparency or remove it */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Slight dark overlay (0.3 transparency) */
+  z-index: -1;
+}
+
+/* Moving Welcome Banner */
+.welcome-banner {
+  background-color: rgba(52, 152, 219, 0.7); /* Reduced opacity for background color */
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+  animation: marquee 20s linear infinite;
+}
+
+/* Animation for the marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
   }
-  
-  /* Body Styles */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-    line-height: 1.6;
-    padding: 20px;
+  to {
+    transform: translateX(-100%);
   }
-  
-  /* Container */
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Header */
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
-  }
-  
-  /* Input Section */
-  .input-section {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .input-section input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .input-section button {
-    background: #3498db;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .input-section button:hover {
-    background: #2980b9;
-  }
-  
-  /* Ticket Section */
-  .ticket-section {
-    margin-top: 20px;
-  }
-  
-  .ticket-section table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .ticket-section th,
-  .ticket-section td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .ticket-section th {
-    background-color: #3498db;
-    color: white;
-  }
-  
-  .ticket-section td {
-    background-color: #f9f9f9;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 600px) {
-    .input-section {
-      flex-direction: column;
-    }
-  
-    .input-section input {
-      margin-bottom: 10px;
-    }
-  }
-  
+}
+
+/* Container for form elements */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Heading */
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input fields and button */
+.input-section {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* PNR input fields */
+.pnr-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pnr-inputs input {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Ticket Details Section */
+.ticket-section {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+/* Button Styling */
+button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
