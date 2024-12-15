@@ -5,6 +5,70 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Railway Reservation System</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Inline styles for quick visualization */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .input-section {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .ticket-section {
+      margin-top: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -16,6 +80,79 @@
     </div>
     <div id="ticketDetails" class="ticket-section"></div>
   </div>
-  <script src="app.js"></script>
+  <script>
+    document.getElementById('getTicket').addEventListener('click', async () => {
+      const pnr = document.getElementById('pnr').value;
+      const ticketDetailsSection = document.getElementById('ticketDetails');
+    
+      // Clear previous results
+      ticketDetailsSection.innerHTML = '';
+    
+      try {
+        const response = await fetch(`http://127.0.0.1:3000/ticket/${pnr}`);
+        if (response.ok) {
+          const ticket = await response.json();
+    
+          // Convert fare to a number if it is a string
+          const fare = parseFloat(ticket.fare);
+    
+          // Create table to display ticket details
+          ticketDetailsSection.innerHTML = `
+            <table>
+              <tr>
+                <th>PNR</th>
+                <td>${ticket.pnr}</td>
+              </tr>
+              <tr>
+                <th>Train Name</th>
+                <td>${ticket.train_name}</td>
+              </tr>
+              <tr>
+                <th>Journey Date</th>
+                <td>${new Date(ticket.journey_date).toLocaleDateString()}</td>
+              </tr>
+              <tr>
+                <th>Fare</th>
+                <td>₹${fare.toFixed(2)}</td>
+              </tr>
+              <tr>
+                <th>Passenger Name</th>
+                <td>${ticket.passenger_name}</td>
+              </tr>
+              <tr>
+                <th>Berth Status</th>
+                <td>${ticket.berth_status}</td>
+              </tr>
+              <tr>
+                <th>Berth Number</th>
+                <td>${ticket.berth_number}</td>
+              </tr>
+              <tr>
+                <th>Source Station</th>
+                <td>${ticket.source_station}</td>
+              </tr>
+              <tr>
+                <th>Destination Station</th>
+                <td>${ticket.destination_station}</td>
+              </tr>
+              <tr>
+                <th>Class Type</th>
+                <td>${ticket.class_type}</td>
+              </tr>
+              <tr>
+                <th>Booking Time</th>
+                <td>${ticket.booking_time}</td>
+              </tr>
+            </table>
+          `;
+        } else {
+          ticketDetailsSection.innerHTML = '<p class="error">Ticket not found!</p>';
+        }
+      } catch (error) {
+        console.error('Error fetching ticket:', error);
+        ticketDetailsSection.innerHTML = '<p class="error">An error occurred while fetching ticket details.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
